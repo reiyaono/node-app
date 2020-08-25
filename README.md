@@ -4,4 +4,8 @@
 
 # 2020-08-22
 
-Chapter1 to Chapter3
+Chapter1 to Chapter2 (~P109)
+
+# 2020-08-25
+
+Chapter3 (~P118)

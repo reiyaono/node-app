@@ -7,5 +7,6 @@ yarn-error.log*
 /test/unit/coverage/
 
 ex-gen-app/node_modules/
+*node_modules/
 
 *.sln

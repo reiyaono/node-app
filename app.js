@@ -128,5 +128,3 @@ const response_other = (request, response) => {
 
 server.listen(3005);
 console.log('Server start')
-
-

@@ -4,14 +4,15 @@
     <meta http-equiv="content-type"
       content="text/html"
       charset="UTF-8">
-    <title><%=title %></title>
+    <><%= title %></title>
     <link rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       crossorigin="anonymous">
   </head>
   <body class="container">
-    <header><h1 class="display-4"><%=title %></h1></header>
+    <header><h1 class="display-4"><%= title %></h1></header>
     <div role="main">
+      <% console.log('index') %>
       <p><%=content %></p>
       <% var id = 0; %>
       <% for(var key in data) { %>
@@ -34,11 +35,6 @@
         </div>
         <input type="submit" value="送信" class="btn btn-primary">
       </form>
-      <!-- <form method="post" action="/other" class="form">
-        <input type="text" name="msg" class="form-control">
-        <input type="submit" value="Click" class="btn btn-primary">
-      </form> -->
-      <!-- <p><a href="/other">Other Pageに移動 &gt;&gt;</a></p> -->
     </div>
   </body>
 </html>

@@ -3,6 +3,7 @@ const router = express.Router();
 const http = require('https')
 const sqlite3 = require('sqlite3')
 const parseString = require('xml2js').parseString
+const { check, validationResult } = require('express-validator')
 
 const db = new sqlite3.Database('mydb.sqlite3')
 
@@ -90,19 +91,44 @@ router.post('/post', (req, res, next) => {
 router.get('/add', (req, res, next) => {
   const data = {
     title: 'Hello!',
-    content: '新しいレコードを入力'
+    content: '新しいレコードを入力',
+    form: { name: '', mail: '', age: 0 }
   }
   res.render('hello/add', data);
 });
 
-router.post('/add', (req, res, next) => {
-  const nm = req.body.name
-  const ml = req.body.mail
-  const ag = req.body.age
-  db.serialize(() => {
-    db.run("INSERT INTO mydata (name, mail, age) values (?, ?, ?)", nm, ml, ag)
+router.post('/add', [
+  check('name', 'NAMEは必ず入力してください。').notEmpty(),
+  check('mail', 'MAILはメールアドレスを記入してください').isEmail(),
+  check('age', 'AGEは年齢(整数)を入力してください。').isInt(),
+  check('age', 'AGE はゼロ以上120以下で入力してください。').custom(value => {
+    return value >= 0 & value <= 120
   })
-  res.redirect('/hello')
+ ], (req, res, next) => {
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    var result = '<ul class="text-danger">'
+    var result_arr = errors.array()
+    for(var n in result_arr) {
+      result += '<li>' + result_arr[n].msg + '</li>'
+    }
+    result += '</ul>'
+    var data = {
+      title: 'Hello/Add',
+      content: result,
+      form: req.body
+    }
+    res.render('hello/add', data)
+  } else {
+    const nm = req.body.name
+    const ml = req.body.mail
+    const ag = req.body.age
+    db.serialize(() => {
+      db.run("INSERT INTO mydata (name, mail, age) values (?, ?, ?)", nm, ml, ag)
+    })
+    res.redirect('/hello')
+  }
 });
 
 router.get('/add', (req, res, next) => {

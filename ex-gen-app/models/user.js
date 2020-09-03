@@ -34,14 +34,14 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isInt: { msg: "整数を入力してください "},
         min: {
-          arg: [0],
+          args: [0],
           msg: "ゼロ以上の値が必要です。"
         }
       }
     }
   }, {})
   User.associate = function(models) {
-
+    User.hasMany(models.Board)
   }
   return User;
 };

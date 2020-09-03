@@ -138,4 +138,33 @@ router.post('/delete', (req, res, next) => {
     res.redirect('/users')
   })
 })
+
+router.get('/login', (req, res, next) => {
+  var data = {
+    title: 'Users/Login',
+    content: '名前とパスワードを入力してください'
+  }
+  res.render('users/login', data)
+})
+
+router.post('/login', (req, res, next) => {
+  db.User.findOne({
+    where: {
+      name: req.body.name,
+      pass: req.body.pass
+    }
+  }).then(user => {
+    if (user != null) {
+      req.session.login = user;
+      let back = req.session.back || '/';
+      res.redirect(back)
+    } else {
+      var data = {
+        title: 'Users/Login',
+        content: '名前かパスワードに問題があります。再度入力してください'
+      }
+      res.render('users/login', data)
+    }
+  })
+})
 module.exports = router;
